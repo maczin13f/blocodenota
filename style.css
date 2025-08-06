@@ -1,0 +1,94 @@
+body {
+    background: white;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-left: 22%;
+    margin-top: -40%;
+}
+
+.divTitulo {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+}
+
+.caixas {
+    display: flex;
+    text-align: center;
+}
+
+a img {
+    width: 10%;
+}
+
+.tools {
+    margin-top: 5%;
+}
+
+#menuLateral {
+    border: solid black;
+    width: 25%;
+    height: 36.5em;
+    border-radius: 30px;
+}
+
+#menuLateral input {
+   width: 90%;
+}
+
+.notasSalvas {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.criaNotas {
+    color: black;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   text-align: center;
+   align-items: center;
+   gap: 30px;
+   width: 50%;
+   border: solid black;
+   padding: 50px;
+   border-radius: 30px;
+   background: url(imagens/notasbg.png);
+   background-size: cover;
+}
+
+.criaNotas input {
+    width: 50%;
+    background: transparent;
+    border: transparent;
+    border-radius: 30px;
+    height: 2em;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+    margin-top: -8%;
+    font-size: 20px;
+}
+
+.criaNotas textarea {
+    width: 95%;
+    margin-left: 20%;
+    margin-top: -5%;
+    line-height: 2em;
+    background: transparent;
+    border: transparent;
+}
