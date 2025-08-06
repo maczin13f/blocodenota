@@ -14,7 +14,6 @@
                 </div>
         <div class="notasSalvas">
             <p><b>Suas notas salvas serão salvas no campo abaixo</b></p>
-            <input disabled cols="30" rows="10"></textarea>
         </div>
         </div>
         <div class="divTitulo">
@@ -24,11 +23,14 @@
 
         <main>
             <div class="criaNotas">
-                <span>Titulo:<input type="text" id="tituloNota"></span>
-                <textarea id="inputDeNotas" cols="30" rows="10"></textarea>
+                <div class="notasFlex">
+                <span>Titulo: <input type="text" id="tituloNota" placeholder="Titulo da tarefa..."></span>
+                <textarea id="inputDeNotas" cols="30" rows="10" placeholder="Digite sua tarefa..."></textarea>
+            </div>
             </div>
 
     </main>
     
+    <script src="index.js"></script>
 </body>
 </html>

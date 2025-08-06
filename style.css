@@ -62,33 +62,29 @@ textarea {
    justify-content: center;
    text-align: center;
    align-items: center;
-   gap: 30px;
    width: 50%;
    border: solid black;
    padding: 50px;
    border-radius: 30px;
-   background: url(imagens/notasbg.png);
-   background-size: cover;
+}
+
+.notasFlex {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 30px;
 }
 
 .criaNotas input {
-    width: 50%;
-    background: transparent;
-    border: transparent;
-    border-radius: 30px;
-    height: 2em;
     text-align: center;
     color: black;
     font-weight: bold;
-    margin-top: -8%;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .criaNotas textarea {
-    width: 95%;
-    margin-left: 20%;
-    margin-top: -5%;
-    line-height: 2em;
-    background: transparent;
-    border: transparent;
+    width: 100%;
+
 }
