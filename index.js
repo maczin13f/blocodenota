@@ -11,10 +11,37 @@ function salvarTitulo() {
     inputTitulo.value = ''
 }
 
+function salvaNotaInteira() {
+    const pegaNotasInteira = JSON.parse(localStorage.getItem('notasLocalInteira')) || [];
+
+    pegaNotasInteira.push(inputTitulo.value);
+    pegaNotasInteira.push(inputNota.value);
+
+    const salvarNotasInteira = localStorage.setItem('notasLocalInteira', JSON.stringify(pegaNotasInteira));
+
+    inputNota.value = ''
+}
+
+function carregarNotas() {
+    const pegaTituloLocal = JSON.parse(localStorage.getItem('titulolocal')) || [];
+
+    const lista = document.querySelector('.notasSalvas');
+
+    pegaTituloLocal.forEach(titulo => {
+        const input = document.createElement('input');
+        input.disabled = true
+        input.value = titulo;
+        lista.appendChild(input);
+    });
+}
+
 inputTitulo.addEventListener('keydown', function(event){
     if (event.key == 'Enter') {
 salvarTitulo();
+carregarNotas()
 }})
+
+window.onload = carregarNotas()
 
 function salvarNota() {
     const pegaNotaLocal = JSON.parse(localStorage.getItem('notalocal')) || [];
@@ -28,19 +55,13 @@ function salvarNota() {
 
 inputNota.addEventListener('keydown', function(event){
     if (event.key == 'Enter') {
-        salvarNota()
+        salvaNotaInteira()
     }
-})
+});
 
-function carregarNotas() {
-    const pegaTituloLocal = JSON.parse(localStorage.getItem('titulolocal')) || [];
-
-    onst lista = document.getElementById('listaDeNotas');
-    lista.innerHTML = ''; // Limpa a lista antes de adicionar os itens
-
-    pegaTituloLocal.forEach(titulo => {
-        const li = document.createElement('li');
-        li.textContent = titulo;
-        lista.appendChild(li);
-    });
+function apagaNotas() {
+    localStorage.removeItem('titulolocal');
+    window.location.reload()
 }
+
+
