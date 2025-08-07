@@ -3,80 +3,114 @@ const inputNota = document.getElementById('inputDeNotas');
 const notasSalvas = document.querySelector('.notasSalvas');
 const notasCaixa = document.querySelector('.notasCaixa');
 
-function salvarTitulo() {
-        notasSalvas.innerHTML = '<p><b>Suas Notas serao salvas no campo abaixo</b></p>';
-
-    const pegaTituloLocal = JSON.parse(localStorage.getItem('titulolocal')) || [];
-    
-    pegaTituloLocal.push(inputTitulo.value);
-
-    const SalvaTituloLocal = localStorage.setItem('titulolocal', JSON.stringify(pegaTituloLocal))
-
-    inputTitulo.value = ''
+// Gera um ID seguro a partir do título
+function gerarIdSeguro(titulo) {
+    return 'nota-' + titulo.toLowerCase()
+        .replace(/\s+/g, '-')              // espaços viram hífen
+        .replace(/[^\w\-]+/g, '')          // remove símbolos
+        .normalize('NFD')                  // remove acentos
+        .replace(/[\u0300-\u036f]/g, '');
 }
 
+// Salva a nota no localStorage e mostra automaticamente
 function salvaNotaInteira() {
-    const pegaNotas = JSON.parse(localStorage.getItem('notasLocalInteira')) || [];
+    const notasSalvasLocais = JSON.parse(localStorage.getItem('notasCompletas')) || [];
 
-    pegaNotas.push(inputNota.value);
+    const novaNota = {
+        titulo: inputTitulo.value,
+        conteudo: inputNota.value
+    };
 
-    const pegaTitulo = JSON.parse(localStorage.getItem('tituloLocalInteiro')) || [];
+    notasSalvasLocais.push(novaNota);
+    localStorage.setItem('notasCompletas', JSON.stringify(notasSalvasLocais));
 
-    pegaNotas.push(inputTitulo.value);
+    adicionarNotaNaTela(novaNota);
+    mostrarNota(novaNota.titulo);
+    salvarTituloMenu(novaNota.titulo);
 
-    const salvaTitulo = localStorage.setItem('tituloLocalInteiro', JSON.stringify(pegaTitulo))
-
-    const salvarNotasInteira = localStorage.setItem('notasLocalInteira', JSON.stringify(pegaNotas));
-
-    notasCaixa.innerHTML = `
-    <p id='titulo'>${inputTitulo.value}<p>
-    <textarea id='nota value='${inputNota.value}'></textarea>
-    `
-
-    inputNota.value = '';
     inputTitulo.value = '';
+    inputNota.value = '';
 }
 
-function carregarNotas() {
-    const pegaTituloLocal = JSON.parse(localStorage.getItem('titulolocal')) || [];
+// Cria visualmente um bloco de nota (oculto por padrão)
+function adicionarNotaNaTela(notaObj) {
+    const bloco = document.createElement('div');
+    bloco.classList.add('blocoNota');
+    bloco.style.display = 'none';
+    bloco.id = gerarIdSeguro(notaObj.titulo);
 
-    const lista = document.querySelector('.notasSalvas');
+    bloco.innerHTML = `
+        <p class="tituloNota"><b>${notaObj.titulo}</b></p>
+        <textarea disabled class="conteudoNota">${notaObj.conteudo}</textarea>
+    `;
 
-    pegaTituloLocal.forEach(titulo => {
-        const input = document.createElement('input');
-        input.disabled = true
-        input.value = titulo;
-        lista.appendChild(input);
+    notasCaixa.appendChild(bloco);
+}
+
+// Exibe apenas a nota correspondente ao título clicado
+function mostrarNota(titulo) {
+    const blocos = document.querySelectorAll('.blocoNota');
+    blocos.forEach(bloco => bloco.style.display = 'none');
+
+    const notaId = gerarIdSeguro(titulo);
+    const notaSelecionada = document.getElementById(notaId);
+
+    if (notaSelecionada) {
+        notaSelecionada.style.display = 'block';
+    } else {
+        console.warn('Nota não encontrada:', notaId);
+    }
+}
+
+// Salva o título no menu lateral (se ainda não existir)
+function salvarTituloMenu(titulo) {
+    const titulos = JSON.parse(localStorage.getItem('tituloMenu')) || [];
+
+    if (!titulos.includes(titulo)) {
+        titulos.push(titulo);
+        localStorage.setItem('tituloMenu', JSON.stringify(titulos));
+    }
+
+    renderizarTitulosMenu();
+}
+
+// Renderiza todos os títulos na lateral com evento de clique
+function renderizarTitulosMenu() {
+    notasSalvas.innerHTML = '<p><b>Suas Notas serão salvas no campo abaixo</b></p>';
+
+    const titulos = JSON.parse(localStorage.getItem('tituloMenu')) || [];
+
+    titulos.forEach(titulo => {
+        const criaInput = document.createElement('h3');
+        criaInput.disabled = true;
+        criaInput.textContent = titulo;
+        criaInput.classList.add('input-titulo');
+
+        criaInput.addEventListener('click', () => {
+            mostrarNota(titulo);
+        });
+
+        notasSalvas.appendChild(criaInput);
     });
 }
 
-inputTitulo.addEventListener('keydown', function(event){
-    if (event.key == 'Enter') {
-salvarTitulo();
-carregarNotas()
-}})
-
-function salvarNota() {
-    const pegaNotaLocal = JSON.parse(localStorage.getItem('notalocal')) || [];
-    
-    pegaNotaLocal.push(inputNota.value);
-
-    const SalvaNotaLocal = localStorage.setItem('notalocal', JSON.stringify(pegaNotaLocal))
-
-    inputNota.value = ''
+// Carrega todas as notas e renderiza a lateral
+function carregarNotas() {
+    notasCaixa.innerHTML = '';
+    const notas = JSON.parse(localStorage.getItem('notasCompletas')) || [];
+    notas.forEach(nota => adicionarNotaNaTela(nota));
+    renderizarTitulosMenu();
 }
 
-inputNota.addEventListener('keydown', function(event){
-    if (event.key == 'Enter') {
-        salvaNotaInteira()
+// Salva nota ao pressionar Enter no campo da nota
+inputNota.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        salvaNotaInteira();
     }
 });
 
-function apagaNotas() {
-    localStorage.removeItem('titulolocal');
-    window.location.reload()
-}
-
+// Apaga tudo com Ctrl + L
 document.body.addEventListener('keydown', function(event) {
     if (event.ctrlKey && event.key.toLowerCase() === 'l') {
         event.preventDefault();
@@ -84,8 +118,12 @@ document.body.addEventListener('keydown', function(event) {
     }
 });
 
+// Remove todas as notas e recarrega a página
+function apagaNotas() {
+    localStorage.removeItem('notasCompletas');
+    localStorage.removeItem('tituloMenu');
+    window.location.reload();
+}
 
-window.onload = carregarNotas()
-
-
-
+// Inicia a aplicação carregando as notas
+window.onload = carregarNotas;

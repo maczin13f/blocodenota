@@ -1,42 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SyncLister</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="caixas">
-            <div id="menuLateral">
-                <div class="tools">
-                    <a href="#"><img src="imagens/config.png"></a>
-                    <a href="#" onclick="apagaNotas()"><img src="imagens/lixo.png"></a>
-                </div>
-        <div class="notasSalvas">
-            <p><b>Suas Notas serao salvas no campo abaixo</b></p>
+        <div id="menuLateral">
+            <div class="tools">
+                <a href="#"><img src="imagens/config.png"></a>
+                <a href="#" onclick="apagaNotas()"><img src="imagens/lixo.png"></a>
+            </div>
+            <div class="notasSalvas">
+                <p><b>Suas Notas serão salvas no campo abaixo</b></p>
+            </div>
         </div>
 
-        </div>
         <div class="divTitulo">
             <h1>SyncLister</h1>
-            </div>
-            </div>
+        </div>
+    </div>
 
-        <main>
-            <div class="criaNotas">
-                <div class="notasFlex">
-                <span>Titulo: <input type="text" id="tituloNota" placeholder="Titulo da tarefa..."></span>
+    <main>
+        <div class="criaNotas">
+            <div class="notasFlex">
+                <span>Título: <input type="text" id="tituloNota" placeholder="Título da tarefa..."></span>
                 <textarea id="inputDeNotas" cols="30" rows="10" placeholder="Digite sua tarefa..."></textarea>
             </div>
-            </div>
+        </div>
 
-            <div class="notasCaixa">
-                
-            </div>
-
+        <div class="notasCaixa">
+            <!-- Notas aparecem aqui -->
+        </div>
     </main>
-    
+
     <script src="index.js"></script>
 </body>
 </html>
