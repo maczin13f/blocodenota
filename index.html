@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SyncLister</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&family=Roboto&family=Open+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="caixas">
@@ -18,14 +19,24 @@
             </div>
         </div>
 
-        <div class="divTitulo">
-            <h1>SyncLister</h1>
+            <h1 id="tituloSite"><span>SyncLister</span></h1>
+
+        <div class="temaDoCartao">
+            <h2>Preferencias Do Usuário</h2>
+            <input type="color" id="inputCorFonte">
+            <input type="color" id="inputCorBg">
+            <input type="number" id="tamanhoFonte">
         </div>
     </div>
 
     <main>
         <div class="criaNotas">
             <div class="notasFlex">
+                <div class="infosBasicasNotasFlex">
+                    <p id="usuario">Usuário</p>
+                <p id="dataCriacaoNota">Data:</p>
+                <p id="horarioCriacaoNota">Horário:</p>
+                </div>
                 <span>Título: <input type="text" id="tituloNota" placeholder="Título da tarefa..."></span>
                 <textarea id="inputDeNotas" cols="30" rows="10" placeholder="Digite sua tarefa..."></textarea>
             </div>
