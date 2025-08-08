@@ -2,17 +2,16 @@ const inputTitulo = document.getElementById('tituloNota');
 const inputNota = document.getElementById('inputDeNotas');
 const notasSalvas = document.querySelector('.notasSalvas');
 const notasCaixa = document.querySelector('.notasCaixa');
+const criaNotas = document.querySelector('.criaNotas');
 
-// Gera um ID seguro a partir do título
 function gerarIdSeguro(titulo) {
     return 'nota-' + titulo.toLowerCase()
-        .replace(/\s+/g, '-')              // espaços viram hífen
-        .replace(/[^\w\-]+/g, '')          // remove símbolos
-        .normalize('NFD')                  // remove acentos
+        .replace(/\s+/g, '-')              // espaçpos viram hifen
+        .replace(/[^\w\-]+/g, '')          // remover símbolos
+        .normalize('NFD')                  // remover acentos
         .replace(/[\u0300-\u036f]/g, '');
 }
 
-// Salva a nota no localStorage e mostra automaticamente
 function salvaNotaInteira() {
     const notasSalvasLocais = JSON.parse(localStorage.getItem('notasCompletas')) || [];
 
@@ -32,7 +31,6 @@ function salvaNotaInteira() {
     inputNota.value = '';
 }
 
-// Cria visualmente um bloco de nota (oculto por padrão)
 function adicionarNotaNaTela(notaObj) {
     const bloco = document.createElement('div');
     bloco.classList.add('blocoNota');
@@ -47,7 +45,6 @@ function adicionarNotaNaTela(notaObj) {
     notasCaixa.appendChild(bloco);
 }
 
-// Exibe apenas a nota correspondente ao título clicado
 function mostrarNota(titulo) {
     const blocos = document.querySelectorAll('.blocoNota');
     blocos.forEach(bloco => bloco.style.display = 'none');
@@ -56,7 +53,8 @@ function mostrarNota(titulo) {
     const notaSelecionada = document.getElementById(notaId);
 
     if (notaSelecionada) {
-        notaSelecionada.style.display = 'block';
+        criaNotas.style.display = 'none';
+        notaSelecionada.style.display = '';
     } else {
         console.warn('Nota não encontrada:', notaId);
     }
@@ -79,18 +77,37 @@ function renderizarTitulosMenu() {
     notasSalvas.innerHTML = '<p><b>Suas Notas serão salvas no campo abaixo</b></p>';
 
     const titulos = JSON.parse(localStorage.getItem('tituloMenu')) || [];
+    const blocoNotaDiv = document.getElementById('nota-efe')
 
     titulos.forEach(titulo => {
         const criaInput = document.createElement('h3');
         criaInput.disabled = true;
         criaInput.textContent = titulo;
         criaInput.classList.add('input-titulo');
+        const btnApagaInput = document.createElement('button');
+        btnApagaInput.id = 'btnApagaInput';
+        btnApagaInput.textContent = 'X';
+
+    btnApagaInput.addEventListener('click', function () {
+
+    let notas = JSON.parse(localStorage.getItem('notasCompletas')) || [];
+    notas = notas.filter(nota => nota.titulo !== titulo);
+    localStorage.setItem('notasCompletas', JSON.stringify(notas));
+
+    let titulos = JSON.parse(localStorage.getItem('tituloMenu')) || [];
+    titulos = titulos.filter(t => t !== titulo);
+    localStorage.setItem('tituloMenu', JSON.stringify(titulos));
+
+    carregarNotas();
+});
+
 
         criaInput.addEventListener('click', () => {
             mostrarNota(titulo);
         });
 
         notasSalvas.appendChild(criaInput);
+        criaInput.appendChild(btnApagaInput)
     });
 }
 
@@ -110,7 +127,7 @@ inputNota.addEventListener('keydown', function(event) {
     }
 });
 
-// Apaga tudo com Ctrl + L
+// Apaga com Ctrl + L
 document.body.addEventListener('keydown', function(event) {
     if (event.ctrlKey && event.key.toLowerCase() === 'l') {
         event.preventDefault();
@@ -125,5 +142,5 @@ function apagaNotas() {
     window.location.reload();
 }
 
-// Inicia a aplicação carregando as notas
+// Inicia o site carregando as notas
 window.onload = carregarNotas;
